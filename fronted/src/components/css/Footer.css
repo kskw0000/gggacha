@@ -1,0 +1,9 @@
+.footer {
+    padding: 10px;
+    background-color: #ecf0f4;
+    text-align: center;
+    width: 100%;
+    bottom: 0;
+    /* 他のスタイル属性をここに追加 */
+  }
+  

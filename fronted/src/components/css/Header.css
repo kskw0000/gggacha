@@ -1,0 +1,16 @@
+.header {
+    position: fixed;
+    top: 0;
+    height: 50px;  
+    padding: 5px;
+    background-color: #2e90f2;
+    text-align: center;
+    width: 100%;
+    /* 他のスタイル属性をここに追加 */
+  }
+
+  .header h1 {
+    font-size: 18px; 
+  }
+  
+  

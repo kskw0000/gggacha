@@ -1,0 +1,14 @@
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 300px;
+  padding: 20px;
+  background: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  text-align: center;
+  z-index: 1000; /* 他の要素より前面に表示 */
+}

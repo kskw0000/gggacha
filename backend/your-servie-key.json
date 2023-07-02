@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "gacha-391123",
+  "private_key_id": "f05e8eb5750e00b678ce677728149fffab87861f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC7IGAABP0kKpYI\nWBkSb1Qux9kczADpUVjkZlbmhSmKgS8MRzHrGbsvo/bNSx+SefJNofd0D1jwSfJz\nPdheLMcX1HOfpXjmlGDaHlqOYFp2zS9oiUh7b2hZfMK/RLlwxRe4nQFdleKdmzwv\nMj1pgyRyLjzf7LpfHN1cZkEbmfHfEL9k+H+bH1tjSaqWhiglkO36i6rzcjp/m9V+\nh5F2i8IT6QUZKDXEPGrNnYs/+mKrZmEP/inn8OZSGOTDXmWWNL9btELef25sRi7M\nS5W5YSMLOxQHy0JB8aiC6oBEqkmnKAL1trJ6ojkfGsZrvma55TjzWxnNhFQtJoiR\nU1MRk6NNAgMBAAECggEAGXii8KW9MmTUls6tHQAH8LU11bBkKF4xECfpCMhT+v0y\nIwT248ZVHzs9nzysT8MnKw+SsBrds5mRNcQTlWAZeqIp2e+LeTF1zILotywg7D5q\nR1u2gMzNoq6zkJcBefruC2xdsPgzyFnG07LOPrRB7APkt+NQjB1Q+WCW2LO4A3GX\nMjDKQIMpxXvqzlH6UAR9e+Igw0HADIRsVNVs6FHn9ixdC/8XW/C/+8PLdntuSl36\n1jYpXq/CorXXMolJ40erZUaGUT0cyYJhggndwwXOisbyJbyGywIwBNyPEJoIL+Cu\nfaOTu8O5zsOm+9XTxfKqw9rSt7fjQz10QBDWt9aIcQKBgQD87s/iaQpRVod57uVc\nmZ5WpiI4I9jeQXzyyZLryCtc3Ztp3r5KVHiglOzOhz/8lVc8Lz/obwQR5ER6pmpT\nYBokmAiKSSiOMFTMgXelZkcZGg976C904cW17wa0+jxNyMNgsyq78rqqXYrlZJTu\ncvSJW6RADueOsJDrKIgg6c7gXQKBgQC9ZUcoGG/B0nR0nf34jRRjnwHEyaEzQWZs\nub2e5PiVIlITqOTOEkJcYCQWAxBeGY1tWNc7+Vr9Jq7cGgbVhahtjbcccvKmgaEL\nuszxQNdYRpLFEKyGUDlKe5hwAflHVm4JMc6jJhHpnI0RFr/9ienxcdw2UCz0Hae+\nnIK2kOhfsQKBgQDVaKn+XqJV/qxQNUFQ4Ey4z3QP6i8RWDAUqf9M8Zekw1Zd/ZKR\nJLSiyQUFPRjABUGVhkhl1UWZ0v/0fHU549wrBBwwkYmmbyEdbB+HbsSOaW6nHUDt\nXZFz8Dm4eWpoNvyimol0C1l0ZXjMFBGVH2k0fB4Z7nlx64ha4df57UygAQKBgGu3\nIx4Zr83jPNpqVNw8mKED+QSLzEOTaYZiqQaqoPpol5eY0fClj9prz3o5aeCq1bWf\n9mGksuwRSRfjMYnUx3LvS3pBoeGzDf3W0uJPB2qsUKMFlamaDMtgudTSOo0pCdHu\n4uAFMeDUaaKTdsPi4QuxvxWgycBY8WNGLk1Y4uAxAoGBAMPQb+PY5kzOqmYULjZC\nXVQWnxEvclstMXuu2Lcn9gYK3AZOI94ZWLyCtAGCy/qxGcW4XrjtnGuvWqYb54D4\nO7AHsL+EsQTY5tw73yDMUSCJ+919ckrBRXf6ck6NH1Hwwi3V5omWVwieAwbcX0US\nYzwvsqMA5ZUTKeVeRdBWzWF8\n-----END PRIVATE KEY-----\n",
+  "client_email": "gacha-555@gacha-391123.iam.gserviceaccount.com",
+  "client_id": "103516769302792968373",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gacha-555%40gacha-391123.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
