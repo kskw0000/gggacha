@@ -104,7 +104,7 @@ app.post('/admin/update-gacha', async (req, res) => {
   const { wins, rolls, winProbability } = req.body;
 
   if (typeof wins !== 'number' || typeof rolls !== 'number' || typeof winProbability !== 'number') {
-    return res.status(400).json({ message: 'Invalid data provided.' });
+    return res.status(400).json({ message: 'Invalid data ddddprovided.' });
   }
 
   db.run(`UPDATE gacha_settings SET wins = ?, rolls = ?, winProbability = ? WHERE id = 1`, [wins, rolls, winProbability], (err) => {
@@ -113,17 +113,6 @@ app.post('/admin/update-gacha', async (req, res) => {
       res.status(500).send('An error occurred.');
     } else {
       res.json({ message: 'Gacha updated successfully.' });
-    }
-  });
-});
-
-app.get('/admin/gacha-info', async (req, res) => {
-  db.get(`SELECT wins, rolls, winProbability FROM gacha_settings WHERE id = 1`, (err, row) => {
-    if (err) {
-      console.error(err.message);
-      res.status(500).send('An error occurred.');
-    } else {
-      res.json({ availableWins: row.wins, availableRolls: row.rolls, winProbability: row.winProbability });
     }
   });
 });

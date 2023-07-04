@@ -117,17 +117,6 @@ app.post('/admin/update-gacha', async (req, res) => {
   });
 });
 
-app.get('/admin/gacha-info', async (req, res) => {
-  db.get(`SELECT wins, rolls, winProbability FROM gacha_settings WHERE id = 1`, (err, row) => {
-    if (err) {
-      console.error(err.message);
-      res.status(500).send('An error occurred.');
-    } else {
-      res.json({ availableWins: row.wins, availableRolls: row.rolls, winProbability: row.winProbability });
-    }
-  });
-});
-
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
