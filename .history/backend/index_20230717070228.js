@@ -13,8 +13,8 @@ app.use(cors({
 app.use(express.json());
 
 let db = mysql.createConnection({
-  host: '34.146.136.225/32',
-  user: 'kskw',
+  host: '34.146.136.225',
+  user: 'root',
   password: 'koshikwa0514',
   database: 'gacha'
 });
