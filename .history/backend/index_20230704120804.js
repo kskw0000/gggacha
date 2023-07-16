@@ -50,7 +50,6 @@ function writeToDb(winCode) {
   });
 }
 
-// 既存のコード...
 app.get('/gacha', async (req, res) => {
   db.get(`SELECT wins, rolls, winProbability FROM gacha_settings WHERE id = 1`, async (err, row) => {
     if (err) {
@@ -82,8 +81,6 @@ app.get('/gacha', async (req, res) => {
     }
   });
 });
-// 既存のコード...
-
 
 app.get('/gacha/info', async (req, res) => {
   db.get(`SELECT wins, rolls, winProbability FROM gacha_settings WHERE id = 1`, (err, row) => {

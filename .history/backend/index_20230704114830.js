@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const { GoogleSpreadsheet } = require('google-spreadsheet');
 const sqlite3 = require('sqlite3').verbose();
 const app = express();
 const port = 3001;
@@ -11,6 +12,9 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+const creds = require('./your-servie-key.json');
+const doc = new GoogleSpreadsheet('1neGERQ0bYIeQcU1yBiAhPVzyYFlIIZg1EdTntcdr_2A');
 
 let db = new sqlite3.Database('./gacha.db', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
   if (err) {
@@ -41,6 +45,13 @@ let db = new sqlite3.Database('./gacha.db', sqlite3.OPEN_READWRITE | sqlite3.OPE
   }
 });
 
+async function writeToSheet(winCode) {
+  await doc.useServiceAccountAuth(creds);
+  await doc.loadInfo();
+  const sheet = doc.sheetsByIndex[0];
+  await sheet.addRow({ 'Win Code': winCode });
+}
+
 function writeToDb(winCode) {
   const issuedAt = new Date().toISOString();
   db.run(`INSERT INTO win_codes (winCode, issuedAt) VALUES (?, ?)`, [winCode, issuedAt], (err) => {
@@ -50,7 +61,6 @@ function writeToDb(winCode) {
   });
 }
 
-// 既存のコード...
 app.get('/gacha', async (req, res) => {
   db.get(`SELECT wins, rolls, winProbability FROM gacha_settings WHERE id = 1`, async (err, row) => {
     if (err) {
@@ -65,6 +75,7 @@ app.get('/gacha', async (req, res) => {
       let winCode = '';
       if (isWin) {
         winCode = Math.random().toString(36).substring(2, 10).toUpperCase();
+        await writeToSheet(winCode);
         writeToDb(winCode);
         row.wins -= 1;
       }
@@ -82,8 +93,6 @@ app.get('/gacha', async (req, res) => {
     }
   });
 });
-// 既存のコード...
-
 
 app.get('/gacha/info', async (req, res) => {
   db.get(`SELECT wins, rolls, winProbability FROM gacha_settings WHERE id = 1`, (err, row) => {

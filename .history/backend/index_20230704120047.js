@@ -1,45 +1,4 @@
-const express = require('express');
-const cors = require('cors');
-const sqlite3 = require('sqlite3').verbose();
-const app = express();
-const port = 3001;
 
-app.use(cors({
-  origin: "http://localhost:3000",  // フロントエンドのURLを設定
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true  // Access-Control-Allow-Credentials: trueをセット
-}));
-
-app.use(express.json());
-
-let db = new sqlite3.Database('./gacha.db', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
-  if (err) {
-    console.error(err.message);
-  } else {
-    db.run(`CREATE TABLE IF NOT EXISTS gacha_settings (
-      id INTEGER PRIMARY KEY,
-      wins INTEGER,
-      rolls INTEGER,
-      winProbability REAL
-    )`, (err) => {
-      if (err) {
-        console.error(err.message);
-      } else {
-        db.get(`SELECT COUNT(id) as count FROM gacha_settings`, (err, row) => {
-          if (err) {
-            console.error(err.message);
-          } else if (row.count === 0) {
-            db.run(`INSERT INTO gacha_settings (id, wins, rolls, winProbability) VALUES (1, 0, 0, 0.0)`);
-          }
-        });
-      }
-    });
-    db.run(`CREATE TABLE IF NOT EXISTS win_codes (
-      winCode TEXT PRIMARY KEY,
-      issuedAt TEXT
-    )`);
-  }
-});
 
 function writeToDb(winCode) {
   const issuedAt = new Date().toISOString();
@@ -50,7 +9,6 @@ function writeToDb(winCode) {
   });
 }
 
-// 既存のコード...
 app.get('/gacha', async (req, res) => {
   db.get(`SELECT wins, rolls, winProbability FROM gacha_settings WHERE id = 1`, async (err, row) => {
     if (err) {
@@ -65,6 +23,7 @@ app.get('/gacha', async (req, res) => {
       let winCode = '';
       if (isWin) {
         winCode = Math.random().toString(36).substring(2, 10).toUpperCase();
+        await writeToSheet(winCode);
         writeToDb(winCode);
         row.wins -= 1;
       }
@@ -82,8 +41,6 @@ app.get('/gacha', async (req, res) => {
     }
   });
 });
-// 既存のコード...
-
 
 app.get('/gacha/info', async (req, res) => {
   db.get(`SELECT wins, rolls, winProbability FROM gacha_settings WHERE id = 1`, (err, row) => {

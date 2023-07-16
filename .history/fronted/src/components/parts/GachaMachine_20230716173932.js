@@ -63,7 +63,7 @@ const GachaMachine = () => {
   };
 
   useEffect(() => {
-    console.log('https://gggacha.onrender.com/:', process.env.REACT_APP_SERVER_URL);
+    console.log('Server URL:', process.env.REACT_APP_SERVER_URL);
     getGachaInfo();
   }, []);
 
