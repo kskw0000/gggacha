@@ -13,9 +13,9 @@ app.use(cors({
 app.use(express.json());
 
 let db = mysql.createConnection({
-  host: 'gacha-391123:asia-northeast1:kskw',
-  user: 'root',
-  password: 'koshikwa0514',
+  host: 'YOUR_HOST',
+  user: 'YOUR_USER',
+  password: 'YOUR_PASSWORD',
   database: 'gacha'
 });
 

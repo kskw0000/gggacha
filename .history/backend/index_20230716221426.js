@@ -14,7 +14,7 @@ app.use(express.json());
 
 let db = mysql.createConnection({
   host: 'gacha-391123:asia-northeast1:kskw',
-  user: 'root',
+  user: 'YOUR_USER',
   password: 'koshikwa0514',
   database: 'gacha'
 });
