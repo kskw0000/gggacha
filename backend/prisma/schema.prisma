@@ -18,12 +18,13 @@ model GachaSetting {
 }
 
 model WinCode {
-  winCode  String @id
+  winCode  String  @id
   issuedAt String
-  userId   String
+  userId   String?
 }
 
 model UserToken {
-  userId      String @id
+  id          String  @id
+  userId      String?
   accessToken String
 }
