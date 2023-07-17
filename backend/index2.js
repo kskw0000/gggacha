@@ -95,8 +95,7 @@ app.get('/gacha', async (req, res) => {
       data: {
         winCode: winCode,
         issuedAt: new Date().toISOString(),
-        // userId: userId,
-        userId: 'Test:' + Math.random().toString(),
+        userId: userId ? userId : null,
       },
     });
     gachaSettings.wins -= 1;
