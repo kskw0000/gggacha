@@ -9,7 +9,8 @@ const { PrismaClient } = require('@prisma/client');
 
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://gggacha.vercel.app'],
+    // origin: ['http://localhost:3000', 'https://gggacha.vercel.app'],
+    origin: 'https://gggacha.vercel.app',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   })
@@ -17,6 +18,10 @@ app.use(
 
 app.use(express.json());
 const prisma = new PrismaClient();
+
+app.get('/', async (req, res) => {
+  res.json({ message: 'Test' });
+});
 
 app.get('/auth/line', async (req, res) => {
   const code = req.query.code;
@@ -139,9 +144,15 @@ app.post('/admin/update-gacha', async (req, res) => {
     return res.status(400).json({ message: 'Invalid data provided.' });
   }
 
-  await prisma.gachaSetting.update({
+  await prisma.gachaSetting.upsert({
     where: { id: 1 },
-    data: { wins: wins, rolls: rolls, winProbability: winProbability },
+    update: { wins: wins, rolls: rolls, winProbability: winProbability },
+    create: {
+      id: 1,
+      wins: wins,
+      rolls: rolls,
+      winProbability: winProbability,
+    },
   });
 
   res.json({ message: 'Gacha updated successfully.' });
