@@ -52,10 +52,9 @@ app.get('/auth/line', async (req, res) => {
       },
     });
 
-    const userId = 'Test:' + Math.random().toString();
-    // const userId = profileResponse?.data?.userId
-    //   ? profileResponse.data.userId
-    //   : null;
+    const userId = profileResponse?.data?.userId
+      ? profileResponse.data.userId
+      : null;
 
     // 保存: ユーザーIDとアクセストークン
     await prisma.userToken.upsert({
@@ -96,7 +95,8 @@ app.get('/gacha', async (req, res) => {
       data: {
         winCode: winCode,
         issuedAt: new Date().toISOString(),
-        userId: userId,
+        // userId: userId,
+        userId: 'Test:' + Math.random().toString(),
       },
     });
     gachaSettings.wins -= 1;
