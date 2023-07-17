@@ -52,7 +52,7 @@ app.get('/auth/line', async (req, res) => {
       },
     });
 
-    const userId = profileResponse.data.userId;
+    const userId = profileResponse.data ? profileResponse.data.userId : null;
 
     // 保存: ユーザーIDとアクセストークン
     await prisma.userToken.upsert({
