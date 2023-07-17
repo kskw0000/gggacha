@@ -5,16 +5,23 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index2.js",
+    "build": "npm install && npx prisma migrate deploy",
+    "studio": "npx prisma studio",
+    "migrate": "npx prisma migrate dev"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^5.0.0",
     "axios": "^1.4.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "google-spreadsheet": "^4.0.2",
     "mysql": "^2.18.1",
     "sqlite3": "^5.1.6"
+  },
+  "devDependencies": {
+    "prisma": "^5.0.0"
   }
 }
