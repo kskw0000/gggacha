@@ -52,7 +52,9 @@ app.get('/auth/line', async (req, res) => {
       },
     });
 
-    const userId = profileResponse.data ? profileResponse.data.userId : null;
+    const userId = profileResponse?.data?.userId
+      ? profileResponse.data.userId
+      : null;
 
     // 保存: ユーザーIDとアクセストークン
     await prisma.userToken.upsert({
@@ -77,18 +79,16 @@ app.get('/gacha', async (req, res) => {
 
   if (!gachaSettings) {
     res.status(500).send('An error occurred.');
-    return;
   }
 
   if (gachaSettings.rolls <= 0) {
-    return res
-      .status(400)
-      .json({ message: 'No more rolls available for today' });
+    res.status(500).json({ message: 'No more rolls available for today' });
   }
 
   let isWin =
     Math.random() < gachaSettings.winProbability && gachaSettings.wins > 0;
   let winCode = '';
+
   if (isWin) {
     winCode = Math.random().toString(36).substring(2, 10).toUpperCase();
     await prisma.winCode.create({
@@ -123,7 +123,6 @@ app.get('/gacha/info', async (req, res) => {
 
   if (!gachaSettings) {
     res.status(500).send('An error occurred.');
-    return;
   }
 
   res.json({
@@ -141,7 +140,7 @@ app.post('/admin/update-gacha', async (req, res) => {
     typeof rolls !== 'number' ||
     typeof winProbability !== 'number'
   ) {
-    return res.status(400).json({ message: 'Invalid data provided.' });
+    res.status(400).json({ message: 'Invalid data provided.' });
   }
 
   await prisma.gachaSetting.upsert({
@@ -165,7 +164,6 @@ app.get('/admin/gacha-info', async (req, res) => {
 
   if (!gachaSettings) {
     res.status(500).send('An error occurred.');
-    return;
   }
 
   res.json({
