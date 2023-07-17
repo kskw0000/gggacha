@@ -4,23 +4,19 @@ CREATE TABLE "GachaSetting" (
     "wins" INTEGER NOT NULL,
     "rolls" INTEGER NOT NULL,
     "winProbability" DOUBLE PRECISION NOT NULL,
-
     CONSTRAINT "GachaSetting_pkey" PRIMARY KEY ("id")
 );
-
 -- CreateTable
 CREATE TABLE "WinCode" (
     "winCode" TEXT NOT NULL,
     "issuedAt" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-
+    "userId" TEXT,
     CONSTRAINT "WinCode_pkey" PRIMARY KEY ("winCode")
 );
-
 -- CreateTable
 CREATE TABLE "UserToken" (
-    "userId" TEXT NOT NULL,
     "accessToken" TEXT NOT NULL,
-
-    CONSTRAINT "UserToken_pkey" PRIMARY KEY ("userId")
+    "id" TEXT NOT NULL,
+    "userId" TEXT,
+    CONSTRAINT "UserToken_pkey" PRIMARY KEY ("id")
 );
