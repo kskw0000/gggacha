@@ -5,10 +5,9 @@ const sqlite3 = require('sqlite3').verbose();
 const app = express();
 const port = 3001;
 
-// YOUR_LINE_CHANNEL_ID, YOUR_LINE_CHANNEL_SECRET, YOUR_REDIRECT_URI を適切な値に書き換えてください
-const CLIENT_ID = '2000154484';
-const CLIENT_SECRET = '3c1a517865462a8f94fa9f53609dd6ee';
-const REDIRECT_URI = 'https://gggacha.vercel.app/';
+const CLIENT_ID = 'YOUR_LINE_CHANNEL_ID';
+const CLIENT_SECRET = 'YOUR_LINE_CHANNEL_SECRET';
+const REDIRECT_URI = 'YOUR_REDIRECT_URI';
 
 app.use(cors({
   origin: ["http://localhost:3000", "https://gggacha.vercel.app"], 
@@ -44,23 +43,9 @@ let db = new sqlite3.Database('./gacha.db', sqlite3.OPEN_READWRITE | sqlite3.OPE
       winCode TEXT PRIMARY KEY,
       issuedAt TEXT,
       userId TEXT
-    )`, (err) => {
-      if (err) {
-        console.error(err.message);
-      }
-    });
-    // user_tokens テーブルを作成
-    db.run(`CREATE TABLE IF NOT EXISTS user_tokens (
-      userId TEXT PRIMARY KEY,
-      accessToken TEXT
-    )`, (err) => {
-      if (err) {
-        console.error(err.message);
-      }
-    });
+    )`);
   }
 });
-
 
 function writeToDb(winCode, userId) {
   const issuedAt = new Date().toISOString();
@@ -97,13 +82,6 @@ app.get('/auth/line', async (req, res) => {
     });
 
     const userId = profileResponse.data.userId;
-
-    // 保存: ユーザーIDとアクセストークン
-    db.run(`INSERT OR REPLACE INTO user_tokens (userId, accessToken) VALUES (?, ?)`, [userId, accessToken], (err) => {
-      if (err) {
-        console.error(err.message);
-      }
-    });
 
     res.json({ message: 'Authentication successful', userId });
   } catch (err) {

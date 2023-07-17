@@ -44,23 +44,14 @@ let db = new sqlite3.Database('./gacha.db', sqlite3.OPEN_READWRITE | sqlite3.OPE
       winCode TEXT PRIMARY KEY,
       issuedAt TEXT,
       userId TEXT
-    )`, (err) => {
-      if (err) {
-        console.error(err.message);
-      }
-    });
+    )`);
     // user_tokens テーブルを作成
     db.run(`CREATE TABLE IF NOT EXISTS user_tokens (
       userId TEXT PRIMARY KEY,
       accessToken TEXT
-    )`, (err) => {
-      if (err) {
-        console.error(err.message);
-      }
-    });
+    )`);
   }
 });
-
 
 function writeToDb(winCode, userId) {
   const issuedAt = new Date().toISOString();
