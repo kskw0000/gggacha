@@ -66,13 +66,19 @@ app.get('/auth/line', async (req, res) => {
 app.get('/gacha', async (req, res) => {
   const userId = req.query.userId;
 
-  const gachaSettings = await prisma.gachaSetting.findUnique({
+  let gachaSettings = await prisma.gachaSetting.findUnique({
     where: { id: 1 },
   });
 
   if (!gachaSettings) {
-    res.status(500).send('An error occurred.');
-    return;
+    gachaSettings = await prisma.gachaSetting.create({
+      data: {
+        id: 1,
+        wins: 0,
+        rolls: 0,
+        winProbability: 0,
+      },
+    });
   }
 
   if (gachaSettings.rolls <= 0) {
@@ -112,13 +118,19 @@ app.get('/gacha', async (req, res) => {
 });
 
 app.get('/gacha/info', async (req, res) => {
-  const gachaSettings = await prisma.gachaSetting.findUnique({
+  let gachaSettings = await prisma.gachaSetting.findUnique({
     where: { id: 1 },
   });
 
   if (!gachaSettings) {
-    res.status(500).send('An error occurred.');
-    return;
+    gachaSettings = await prisma.gachaSetting.create({
+      data: {
+        id: 1,
+        wins: 0,
+        rolls: 0,
+        winProbability: 0,
+      },
+    });
   }
 
   res.json({
