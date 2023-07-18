@@ -12,7 +12,7 @@ model GachaSetting {
   wins           Int
   rolls          Int
   winProbability Float
-  point Int?
+  point Int
 }
 
 model WinCode {

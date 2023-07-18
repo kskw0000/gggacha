@@ -1,0 +1,29 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server2.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "build": "npm install && npx prisma migrate deploy",
+    "studio": "npx prisma studio",
+    "migrate": "npx prisma migrate dev"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^4.16.2",
+    "axios": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "pg": "^8.11.1"
+  },
+  "devDependencies": {
+    "prisma": "^4.16.2"
+  },
+  "engines": {
+    "node": ">=20.3.0"
+  }
+}
