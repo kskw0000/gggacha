@@ -129,7 +129,6 @@ const AppContent = () => {
   return (
     <div className="App">
       <Header />
-      <h2>{userName && `Welcome, ${userName}!`}</h2> {/* ユーザー名が設定されている場合に表示します */}
       <Routes>
         <Route path="/" element={
           <>

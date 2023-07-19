@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import Header from './components/parts/Header';
@@ -30,9 +30,6 @@ const GachaRow = ({ title, gachas }) => (
 );
 
 const AppContent = () => {
-    // 以下に、ユーザーの名前を保持するための状態を追加します
-    const [userName, setUserName] = useState(''); // 初期値は空文字列です
-
   const gachaData = [
     {
       rowTitle: '人気のガチャ',
@@ -59,7 +56,7 @@ const AppContent = () => {
   
       // LIFFを初期化します。LIFF IDを指定します。
       // LIFF APIの関数は非同期であり、処理が完了するまで待つためには'await'を使います。
-      await liff.init({ liffId: `2000154484-elnvPWP0` });
+      await liff.init({ liffId: `your LIFF ID here` });
       
       // ユーザーがログインしているかどうかを確認します。
       if (!liff.isLoggedIn()) {
@@ -71,9 +68,6 @@ const AppContent = () => {
         // ユーザーがログインしている場合、そのユーザーのプロフィールを取得します。
         const profile = await liff.getProfile();
         const name = profile.displayName;
-
-        // ユーザー名の状態を更新します
-        setUserName(name);
   
         // URLパラメータを解析します。
         const urlParams = new URLSearchParams(location.search);
@@ -129,7 +123,6 @@ const AppContent = () => {
   return (
     <div className="App">
       <Header />
-      <h2>{userName && `Welcome, ${userName}!`}</h2> {/* ユーザー名が設定されている場合に表示します */}
       <Routes>
         <Route path="/" element={
           <>
