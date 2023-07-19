@@ -51,7 +51,7 @@ const AppContent = () => {
 
   useEffect(() => {
     (async () => {
-      await liff.init({ liffId: `2000154484-elnvPWP0` });
+      await liff.init({ liffId: `` });
       
       if (!liff.isLoggedIn()) {
         liff.login();

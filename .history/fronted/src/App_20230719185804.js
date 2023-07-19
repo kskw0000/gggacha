@@ -50,45 +50,33 @@ const AppContent = () => {
   const location = useLocation();
 
   useEffect(() => {
-    (async () => {
-      await liff.init({ liffId: `2000154484-elnvPWP0` });
-      
-      if (!liff.isLoggedIn()) {
-        liff.login();
-      } else {
-        const profile = await liff.getProfile();
-        const name = profile.displayName;
-  
-        const urlParams = new URLSearchParams(location.search);
-        const code = urlParams.get('code');
-        const existingUserId = localStorage.getItem('userId');
-  
-        if (existingUserId) {
-          axios.get(`http://localhost:3001/auth/check?userId=${existingUserId}`)
-            .then(response => {
-              if (response.status !== 200) {
-                liff.login();
-              }
-            })
-            .catch(error => {
-              console.error(error);
-            });
-        } else if (code) {
-          axios.get(`http://localhost:3001/auth/line?code=${code}`)
-            .then(response => {
-              const userId = response.data.userId;
-              localStorage.setItem('userId', userId);
-            })
-            .catch(error => {
-              console.error(error);
-            });
-        } else {
-          liff.login();
-        }
-      }
-    })();
+    const urlParams = new URLSearchParams(location.search);
+    const code = urlParams.get('code');
+    const existingUserId = localStorage.getItem('userId');
+
+    if (existingUserId) {
+      axios.get(`http://localhost:3001/auth/check?userId=${existingUserId}`)
+        .then(response => {
+          if (response.status !== 200) {
+            startLoginFlow();
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    } else if (code) {
+      axios.get(`http://localhost:3001/auth/line?code=${code}`)
+        .then(response => {
+          const userId = response.data.userId;
+          localStorage.setItem('userId', userId);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    } else {
+      startLoginFlow();
+    }
   }, [location]);
-  
 
   const startLoginFlow = () => {
     const YOUR_LINE_CHANNEL_ID = process.env.YOUR_LINE_CHANNEL_ID;
