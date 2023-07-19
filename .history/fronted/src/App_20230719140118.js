@@ -28,7 +28,7 @@ const GachaRow = ({ title, gachas }) => (
   </div>
 );
 
-const AppContent = () => {
+function App() {
   const gachaData = [
     {
       rowTitle: '人気のガチャ',
@@ -57,11 +57,13 @@ const AppContent = () => {
       axios.get(`http://localhost:3001/auth/check?userId=${existingUserId}`)
         .then(response => {
           if (response.status !== 200) {
+            // If the token is invalid, start the login flow again
             startLoginFlow();
           }
         })
         .catch(error => {
           console.error(error);
+          // Handle the error here
         });
     } else if (code) {
       axios.get(`http://localhost:3001/auth/line?code=${code}`)
@@ -71,6 +73,7 @@ const AppContent = () => {
         })
         .catch(error => {
           console.error(error);
+          // Handle the error here
         });
     } else {
       startLoginFlow();
@@ -87,29 +90,23 @@ const AppContent = () => {
   };
 
   return (
-    <div className="App">
-      <Header />
-      <Routes>
-        <Route path="/" element={
-          <>
-            {gachaData.map((row, index) => (
-              <GachaRow key={index} title={row.rowTitle} gachas={row.gachas} />
-            ))}
-          </>
-        } />
-        <Route path="/gacha/:id" element={<Gacha />} />
-        <Route path="/winner" element={<WinnerPage />} />  
-        <Route path="/admin" element={<Admin />} />  
-      </Routes>
-      <Footer />
-    </div>
-  );
-}
-
-function App() {
-  return (
     <Router>
-      <AppContent />
+      <div className="App">
+        <Header />
+        <Routes>
+          <Route path="/" element={
+            <>
+              {gachaData.map((row, index) => (
+                <GachaRow key={index} title={row.rowTitle} gachas={row.gachas} />
+              ))}
+            </>
+          } />
+          <Route path="/gacha/:id" element={<Gacha />} />
+          <Route path="/winner" element={<WinnerPage />} />  
+          <Route path="/admin" element={<Admin />} />  
+        </Routes>
+        <Footer />
+      </div>
     </Router>
   );
 }

@@ -173,40 +173,6 @@ app.get('/admin/gacha-info', async (req, res) => {
   });
 });
 
-app.get('/auth/check', async (req, res) => {
-  const userId = req.query.userId;
-
-  if (!userId) {
-    return res.status(400).send('No user id provided.');
-  }
-
-  try {
-    const userToken = await prisma.userToken.findUnique({
-      where: { userId: userId },
-    });
-
-    if (!userToken) {
-      return res.status(404).send('No token found for provided user id.');
-    }
-
-    const response = await axios.get('https://api.line.me/v2/profile', {
-      headers: {
-        Authorization: `Bearer ${userToken.accessToken}`,
-      },
-    });
-
-    if (response.status !== 200) {
-      return res.status(401).send('Token is not valid.');
-    }
-
-    return res.status(200).send('Token is valid.');
-  } catch (err) {
-    console.error(err);
-    return res.status(500).send('An error occurred during validation.');
-  }
-});
-
-
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
