@@ -76,16 +76,25 @@ const AppContent = () => {
         localStorage.setItem('isLogin', 'true');
         localStorage.setItem('userName', name);
 
-        axios.post('http://localhost:3001/auth/validate-token', { token: accessToken })
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.error(error);
-          if (error.response && error.response.status === 401) {
-            liff.login();
-          }
-        });
+          axios.post('http://localhost:3001/auth/validate-token', { token: accessToken })
+          .then(response => {
+            console.log(response);
+            if (response.status === 200) {
+              // set the logged-in state in localStorage
+              localStorage.setItem('isLoggedIn', 'true');
+            } else {
+              // clear the logged-in state in localStorage
+              localStorage.removeItem('isLoggedIn');
+              liff.login();
+            }
+          })
+          .catch(error => {
+            console.error(error);
+            localStorage.removeItem('isLoggedIn');
+            if (error.response && error.response.status === 401) {
+              liff.login();
+            }
+          });
 
           const urlParams = new URLSearchParams(location.search);
           const code = urlParams.get('code');
@@ -148,10 +157,20 @@ const AppContent = () => {
 }
 
 function App() {
+  const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      // You can replace this with the actual login flow you have
+      startLoginFlow();
+    }
+  }, [isLoggedIn]);
+
   return (
     <Router>
-      <AppContent />
+      { isLoggedIn ? <AppContent /> : <div>Please login</div> }
     </Router>
   );
 }
+
 export default App;

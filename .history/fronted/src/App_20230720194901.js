@@ -148,10 +148,20 @@ const AppContent = () => {
 }
 
 function App() {
+  const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      // You can replace this with the actual login flow you have
+      startLoginFlow();
+    }
+  }, [isLoggedIn]);
+
   return (
     <Router>
-      <AppContent />
+      { isLoggedIn ? <AppContent /> : <div>Please login</div> }
     </Router>
   );
 }
+
 export default App;
