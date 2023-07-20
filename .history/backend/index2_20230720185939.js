@@ -177,7 +177,7 @@ app.get('/auth/check', async (req, res) => {
   const userId = req.query.userId;
 
   if (!userId) {
-    return res.status(400).json({ message: 'No user id provided.' });
+    return res.status(400).send('No user id provided.');
   }
 
   try {
@@ -186,7 +186,7 @@ app.get('/auth/check', async (req, res) => {
     });
 
     if (!userToken) {
-      return res.status(404).json({ message: 'No token found for provided user id.' });
+      return res.status(404).send('No token found for provided user id.');
     }
 
     const response = await axios.get('https://api.line.me/v2/profile', {
@@ -196,13 +196,13 @@ app.get('/auth/check', async (req, res) => {
     });
 
     if (response.status !== 200) {
-      return res.status(401).json({ message: 'Token is not valid.' });
+      return res.status(401).send('Token is not valid.');
     }
 
-    return res.status(200).json({ message: 'Token is valid.' });
+    return res.status(200).send('Token is valid.');
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: 'An error occurred during token validation.' });
+    return res.status(500).send('An error occurred during validation.');
   }
 });
 

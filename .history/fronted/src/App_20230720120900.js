@@ -76,20 +76,6 @@ const AppContent = () => {
 
         // ユーザー名の状態を更新します
         setUserName(name);
-
-         // アクセストークンをサーバに送信
-         axios.post('http://localhost:3001/auth/validate-token', { token: accessToken })
-         .then(response => {
-           // レスポンスを処理します。サーバは有効なトークンを受け取った後の適切なレスポンスを返す必要があります。
-           console.log(response);
-         })
-         .catch(error => {
-           console.error(error);
-           // トークンが無効の場合は再ログイン
-           if (error.response && error.response.status === 401) {
-             liff.login();
-           }
-         });
   
         // URLパラメータを解析します。
         const urlParams = new URLSearchParams(location.search);

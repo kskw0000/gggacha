@@ -196,13 +196,13 @@ app.get('/auth/check', async (req, res) => {
     });
 
     if (response.status !== 200) {
-      return res.status(401).json({ message: 'Token is not valid.' });
+      return res.status(401).send('Token is not valid.');
     }
 
-    return res.status(200).json({ message: 'Token is valid.' });
+    return res.status(200).send('Token is valid.');
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: 'An error occurred during token validation.' });
+    return res.status(500).send('An error occurred during validation.');
   }
 });
 

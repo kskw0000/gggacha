@@ -32,7 +32,6 @@ const GachaRow = ({ title, gachas }) => (
 const AppContent = () => {
     // 以下に、ユーザーの名前を保持するための状態を追加します
     const [userName, setUserName] = useState(''); // 初期値は空文字列です
-     const [gachaResult, setGachaResult] = useState([]); // ガチャ結果の初期値は空の配列
 
   const gachaData = [
     {
@@ -76,20 +75,6 @@ const AppContent = () => {
 
         // ユーザー名の状態を更新します
         setUserName(name);
-
-         // アクセストークンをサーバに送信
-         axios.post('http://localhost:3001/auth/validate-token', { token: accessToken })
-         .then(response => {
-           // レスポンスを処理します。サーバは有効なトークンを受け取った後の適切なレスポンスを返す必要があります。
-           console.log(response);
-         })
-         .catch(error => {
-           console.error(error);
-           // トークンが無効の場合は再ログイン
-           if (error.response && error.response.status === 401) {
-             liff.login();
-           }
-         });
   
         // URLパラメータを解析します。
         const urlParams = new URLSearchParams(location.search);
