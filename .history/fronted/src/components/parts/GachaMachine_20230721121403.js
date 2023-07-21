@@ -52,7 +52,7 @@ const GachaMachine = () => {
   const getGachaInfo = async () => {
     try {
       const existingUserId = localStorage.getItem('userId');
-      const response = await axios.get(`${serverUrl}/gacha/info?userId=${existingUserId}`);
+      const response = await axios.get(`${serverUrl}/gacha/info?userId=${userId}`);
       const { availableWins, availableRolls, winProbability } = response.data;
       setAvailableWins(availableWins);
       setAvailableRolls(availableRolls);
