@@ -76,7 +76,7 @@ const AppContent = () => {
         localStorage.setItem('isLogin', 'true');
         localStorage.setItem('userName', name);
 
-        axios.post('${process.env.REACT_APP_API_URL}/auth/validate-token', { token: accessToken })
+        axios.post('http://localhost:3001/auth/validate-token', { token: accessToken })
         .then(response => {
           console.log(response);
         })
@@ -92,7 +92,7 @@ const AppContent = () => {
           const existingUserId = localStorage.getItem('userId');
   
           if (existingUserId) {
-            axios.get(`${process.env.REACT_APP_API_URL}/auth/check?userId=${existingUserId}`)
+            axios.get(`${process.env.REACT_APP_API_URL}//auth/check?userId=${existingUserId}`)
               .then(response => {
                 if (response.status !== 200) {
                   liff.login();
@@ -102,7 +102,7 @@ const AppContent = () => {
                 console.error(error);
               });
           } else if (code) {
-            axios.get(`${process.env.REACT_APP_API_URL}/auth/line?code=${code}`)
+            axios.get(`http://localhost:3001/auth/line?code=${code}`)
               .then(response => {
                 const userId = response.data.userId;
                 localStorage.setItem('userId', userId);

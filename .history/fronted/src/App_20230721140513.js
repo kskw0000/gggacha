@@ -76,7 +76,7 @@ const AppContent = () => {
         localStorage.setItem('isLogin', 'true');
         localStorage.setItem('userName', name);
 
-        axios.post('${process.env.REACT_APP_API_URL}/auth/validate-token', { token: accessToken })
+        axios.post('http://localhost:3001/auth/validate-token', { token: accessToken })
         .then(response => {
           console.log(response);
         })
