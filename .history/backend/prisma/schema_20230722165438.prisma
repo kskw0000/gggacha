@@ -24,7 +24,9 @@ model WinCode {
 model User {
   userId      String   @id
   name        String
-  accessToken String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  userToken   UserToken   @relation(fields: [userId], references: [id])
 }
+
+

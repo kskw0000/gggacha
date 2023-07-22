@@ -206,39 +206,6 @@ app.get('/auth/check', async (req, res) => {
   }
 });
 
-app.post('/auth/save-user', async (req, res) => {
-  const { name, accessToken } = req.body;
-
-  if (!name || !accessToken) {
-    return res.status(400).json({ message: 'User name and access token are required.' });
-  }
-
-  try {
-    const response = await axios.get('https://api.line.me/v2/profile', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    const userId = response?.data?.userId;
-
-    if (!userId) {
-      return res.status(401).json({ message: 'Invalid access token.' });
-    }
-
-    // 保存: ユーザーID、ユーザー名、アクセストークン
-    await prisma.user.upsert({
-      where: { userId: userId },
-      update: { name: name, accessToken: accessToken },
-      create: { userId: userId, name: name, accessToken: accessToken },
-    });
-
-    res.json({ message: 'User information saved successfully.' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('An error occurred during user information saving.');
-  }
-});
 
 
 

@@ -24,7 +24,14 @@ model WinCode {
 model User {
   userId      String   @id
   name        String
-  accessToken String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  userToken   UserToken?   @relation(fields: [userId], references: [id])
+}
+
+model UserToken {
+  id          String  @id
+  accessToken String
+  userId      String  // made it non-nullable
+  user        User    @relation(fields: [userId], references: [userId])
 }

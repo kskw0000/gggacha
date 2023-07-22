@@ -21,10 +21,17 @@ model WinCode {
   userId   String?
 }
 
+model UserToken {
+  accessToken String
+  id          String  @id
+  userId      String?
+}
+
 model User {
   userId      String   @id
   name        String
   accessToken String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  UserToken   UserToken?
 }

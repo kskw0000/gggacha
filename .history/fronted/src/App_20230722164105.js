@@ -81,6 +81,7 @@ const AppContent = () => {
             console.error(error);
           });
 
+        
 
         // ユーザーがログインした後、その情報をlocalStorageに保存します。
         localStorage.setItem('isLogin', 'true');
