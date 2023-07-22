@@ -364,27 +364,6 @@ app.post('/webhook', express.raw({type: 'application/json'}), async (req, res) =
   res.sendStatus(200);
 });
 
-app.get('/user-points', async (req, res) => {
-  const { userId } = req.query;
-
-  if (!userId) {
-    res.status(400).json({ message: 'Invalid user id.' });
-    return;
-  }
-
-  const user = await prisma.user.findUnique({
-    where: { userId: userId },
-  });
-
-  if (!user) {
-    res.status(404).json({ message: 'User not found.' });
-    return;
-  }
-
-  res.json({ points: user.points });
-});
-
-
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);

@@ -328,62 +328,6 @@ app.post('/create-checkout-session', async (req, res) => {
   res.json({ id: session.id });
 });
 
-app.post('/webhook', express.raw({type: 'application/json'}), async (req, res) => {
-  let event;
-
-  try {
-    event = stripe.webhooks.constructEvent(req.body, req.headers['stripe-signature'], whsec_2nkpuiOm0Up2FUtnLnCybfNzzFJlZdT4);
-  } catch (err) {
-    console.log(`⚠️  Webhook signature verification failed. ${err.message}`);
-    return res.sendStatus(400);
-  }
-
-  if (event.type === 'checkout.session.completed') {
-    const session = event.data.object;
-    const userId = session.metadata.userId;
-
-    const user = await prisma.user.findUnique({
-      where: { userId: userId },
-    });
-
-    if (!user) {
-      console.log(`⚠️  User not found. userId: ${userId}`);
-      return res.sendStatus(400);
-    }
-
-    user.points += 1000;
-
-    await prisma.user.update({
-      where: { userId: userId },
-      data: { points: user.points },
-    });
-
-    console.log(`✅ Successfully added points. userId: ${userId}`);
-  }
-
-  res.sendStatus(200);
-});
-
-app.get('/user-points', async (req, res) => {
-  const { userId } = req.query;
-
-  if (!userId) {
-    res.status(400).json({ message: 'Invalid user id.' });
-    return;
-  }
-
-  const user = await prisma.user.findUnique({
-    where: { userId: userId },
-  });
-
-  if (!user) {
-    res.status(404).json({ message: 'User not found.' });
-    return;
-  }
-
-  res.json({ points: user.points });
-});
-
 
 
 app.listen(port, () => {

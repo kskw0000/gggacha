@@ -83,7 +83,6 @@ const GachaMachine = () => {
 
   return (
     <div>
-      <p>あなたの現在のポイント: {points}</p> 
       <button onClick={handleGacha} disabled={loading || availableWins === 0 || availableRolls === 0}>
         {loading ? 'Rolling...' : 'ガラポンを回す'}
       </button>

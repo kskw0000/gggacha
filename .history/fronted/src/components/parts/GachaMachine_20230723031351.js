@@ -78,12 +78,10 @@ const GachaMachine = () => {
   useEffect(() => {
     console.log('https://gggacha.onrender.com/:', process.env.REACT_APP_SERVER_URL);
     getGachaInfo();
-    getUserPoints();  // 追加
   }, []);
 
   return (
     <div>
-      <p>あなたの現在のポイント: {points}</p> 
       <button onClick={handleGacha} disabled={loading || availableWins === 0 || availableRolls === 0}>
         {loading ? 'Rolling...' : 'ガラポンを回す'}
       </button>

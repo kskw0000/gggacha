@@ -1,5 +1,4 @@
 require('dotenv').config();
-const stripe = require('stripe')('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'); // あなたのStripe Secret Keyを使用
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
@@ -75,23 +74,6 @@ app.get('/auth/line', async (req, res) => {
 
 app.get('/gacha', async (req, res) => {
   const userId = req.query.userId;
-
-  const user = await prisma.user.findUnique({
-    where: { userId: userId },
-  });
-
-  if (!user || user.points < 120) {
-    res.status(400).json({ message: 'Not enough points.' });
-    return;
-  }
-
-  // Deduct 120 points
-  user.points -= 120;
-
-  await prisma.user.update({
-    where: { userId: userId },
-    data: { points: user.points },
-  });
 
   const gachaSettings = await prisma.gachaSetting.findUnique({
     where: { id: 1 },
@@ -264,124 +246,6 @@ app.post('/auth/save-user', async (req, res) => {
     console.error(err);
     res.status(500).send('An error occurred during user information saving.');
   }
-});
-
-app.post('/buy-points', async (req, res) => {
-  const { userId, amount } = req.body;
-
-  if (!userId || !amount || amount < 1) {
-    res.status(400).json({ message: 'Invalid user id or amount.' });
-    return;
-  }
-
-  const user = await prisma.user.findUnique({
-    where: { userId: userId },
-  });
-
-  if (!user) {
-    res.status(400).json({ message: 'User not found.' });
-    return;
-  }
-
-  // Add points
-  user.points += amount * 1000; // 1000 points for each unit purchased
-
-  await prisma.user.update({
-    where: { userId: userId },
-    data: { points: user.points },
-  });
-
-  res.json({ message: 'Points purchased successfully.' });
-});
-
-
-app.post('/create-checkout-session', async (req, res) => {
-  const { userId } = req.body;
-
-  if (!userId) {
-    res.status(400).json({ message: 'Invalid user id.' });
-    return;
-  }
-
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    line_items: [
-      {
-        price_data: {
-          currency: 'jpy',
-          product_data: {
-            name: '1000 points',
-          },
-          unit_amount: 50000, // 50000 = 500.00 JPY
-        },
-        quantity: 1,
-      },
-    ],
-    mode: 'payment',
-    success_url: 'https://your-website.com/success?session_id={CHECKOUT_SESSION_ID}',
-    cancel_url: 'https://your-website.com/cancel',
-    metadata: {
-      userId: userId
-    }
-  });
-
-  res.json({ id: session.id });
-});
-
-app.post('/webhook', express.raw({type: 'application/json'}), async (req, res) => {
-  let event;
-
-  try {
-    event = stripe.webhooks.constructEvent(req.body, req.headers['stripe-signature'], whsec_2nkpuiOm0Up2FUtnLnCybfNzzFJlZdT4);
-  } catch (err) {
-    console.log(`⚠️  Webhook signature verification failed. ${err.message}`);
-    return res.sendStatus(400);
-  }
-
-  if (event.type === 'checkout.session.completed') {
-    const session = event.data.object;
-    const userId = session.metadata.userId;
-
-    const user = await prisma.user.findUnique({
-      where: { userId: userId },
-    });
-
-    if (!user) {
-      console.log(`⚠️  User not found. userId: ${userId}`);
-      return res.sendStatus(400);
-    }
-
-    user.points += 1000;
-
-    await prisma.user.update({
-      where: { userId: userId },
-      data: { points: user.points },
-    });
-
-    console.log(`✅ Successfully added points. userId: ${userId}`);
-  }
-
-  res.sendStatus(200);
-});
-
-app.get('/user-points', async (req, res) => {
-  const { userId } = req.query;
-
-  if (!userId) {
-    res.status(400).json({ message: 'Invalid user id.' });
-    return;
-  }
-
-  const user = await prisma.user.findUnique({
-    where: { userId: userId },
-  });
-
-  if (!user) {
-    res.status(404).json({ message: 'User not found.' });
-    return;
-  }
-
-  res.json({ points: user.points });
 });
 
 
