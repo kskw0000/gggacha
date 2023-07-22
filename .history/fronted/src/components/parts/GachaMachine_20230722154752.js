@@ -33,7 +33,8 @@ const GachaMachine = () => {
     setLoading(true);
     try {
       const existingUserId = localStorage.getItem('userId');
-      const response = await axios.get(`${serverUrl}/gacha?userId=${existingUserId}`);
+const response = await axios.get(`${serverUrl}/gacha?userId=${existingUserId}`);
+
       const { isWin, winCode, availableWins, availableRolls } = response.data;
       setResult(isWin ? "当たり！赤い玉が出ました！" : "ハズレ...白い玉が出ました");
       setAvailableWins(availableWins);
