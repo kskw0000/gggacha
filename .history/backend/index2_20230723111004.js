@@ -64,17 +64,12 @@ app.get('/auth/line', async (req, res) => {
       ? profileResponse.data.userId
       : null;
 
-      const displayName = profileResponse.data.displayName
-    ? profileResponse.data.displayName
-    : null;
-
     // 保存: ユーザーIDとアクセストークン
     await prisma.userToken.upsert({
       where: { userId: userId },
-      update: { accessToken: accessToken, displayName: displayName },
-      create: { userId: userId, accessToken: accessToken, displayName: displayName },
+      update: { accessToken: accessToken },
+      create: { userId: userId, accessToken: accessToken },
     });
-    
 
     res.json({ message: 'Authentication successful', userId });
   } catch (err) {
@@ -286,7 +281,7 @@ app.get('/admin/gacha-info', async (req, res) => {
 });
 
 
-//ポイント購入系ーーーーー
+
 // ポイント購入エンドポイント
 app.post('/buy-points', async (req, res) => {
   const { userId, amount } = req.body;
@@ -406,18 +401,6 @@ app.get('/user-points', async (req, res) => {
   }
 
   res.json({ points: user.points });
-});
-
-// 情報をサーバーサイドへ
-axios.post('${process.env.REACT_APP_API_URL}/auth/validate-token', { token: accessToken })
-.then(response => {
-  console.log(response);
-})
-.catch(error => {
-  console.error(error);
-  if (error.response && error.response.status === 401) {
-    liff.login();
-  }
 });
 
 

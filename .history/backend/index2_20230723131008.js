@@ -408,7 +408,7 @@ app.get('/user-points', async (req, res) => {
   res.json({ points: user.points });
 });
 
-// 情報をサーバーサイドへ
+// 
 axios.post('${process.env.REACT_APP_API_URL}/auth/validate-token', { token: accessToken })
 .then(response => {
   console.log(response);

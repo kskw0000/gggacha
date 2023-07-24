@@ -27,7 +27,7 @@ app.get('/', async (req, res) => {
   res.json({ message: 'Test' });
 });
 
-//認証についてーーーーーー
+//認証について
 // LINEのOAuth認証
 app.get('/auth/line', async (req, res) => {
   const code = req.query.code;
@@ -64,17 +64,12 @@ app.get('/auth/line', async (req, res) => {
       ? profileResponse.data.userId
       : null;
 
-      const displayName = profileResponse.data.displayName
-    ? profileResponse.data.displayName
-    : null;
-
     // 保存: ユーザーIDとアクセストークン
     await prisma.userToken.upsert({
       where: { userId: userId },
-      update: { accessToken: accessToken, displayName: displayName },
-      create: { userId: userId, accessToken: accessToken, displayName: displayName },
+      update: { accessToken: accessToken },
+      create: { userId: userId, accessToken: accessToken },
     });
-    
 
     res.json({ message: 'Authentication successful', userId });
   } catch (err) {
@@ -158,8 +153,6 @@ app.post('/auth/save-user', async (req, res) => {
   }
 });
 
-
-//ガチャについてーーーーー
 // ガチャロール。ユーザーのポイントが十分でない場合、またはガチャ設定が取得できない場合、エラーメッセージが返されます。
 app.get('/gacha', async (req, res) => {
   const userId = req.query.userId;
@@ -224,6 +217,7 @@ app.get('/gacha', async (req, res) => {
   });
 });
 
+
 // フロント/ガチャ表記
 app.get('/gacha/info', async (req, res) => {
   const gachaSettings = await prisma.gachaSetting.findUnique({
@@ -241,7 +235,7 @@ app.get('/gacha/info', async (req, res) => {
   });
 });
 
-// ガチャの管理画面ーーーーーー
+// ガチャの管理画面
 // ガチャの設定更新
 app.post('/admin/update-gacha', async (req, res) => {
   const { wins, rolls, winProbability } = req.body;
@@ -286,7 +280,7 @@ app.get('/admin/gacha-info', async (req, res) => {
 });
 
 
-//ポイント購入系ーーーーー
+
 // ポイント購入エンドポイント
 app.post('/buy-points', async (req, res) => {
   const { userId, amount } = req.body;
@@ -406,18 +400,6 @@ app.get('/user-points', async (req, res) => {
   }
 
   res.json({ points: user.points });
-});
-
-// 情報をサーバーサイドへ
-axios.post('${process.env.REACT_APP_API_URL}/auth/validate-token', { token: accessToken })
-.then(response => {
-  console.log(response);
-})
-.catch(error => {
-  console.error(error);
-  if (error.response && error.response.status === 401) {
-    liff.login();
-  }
 });
 
 
