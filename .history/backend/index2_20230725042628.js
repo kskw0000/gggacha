@@ -1,16 +1,12 @@
 require('dotenv').config();
 const stripe = require('stripe')('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'); // あなたのStripe Secret Keyを使用
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const axios = require('axios');
 const app = express();
 const port = 3001;
 
 const { PrismaClient } = require('@prisma/client');
-
-app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 // コース有効化
 app.use(

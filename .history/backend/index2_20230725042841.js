@@ -9,9 +9,6 @@ const port = 3001;
 
 const { PrismaClient } = require('@prisma/client');
 
-app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-
 // コース有効化
 app.use(
   cors({

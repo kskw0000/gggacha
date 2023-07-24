@@ -1,16 +1,12 @@
 require('dotenv').config();
 const stripe = require('stripe')('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'); // あなたのStripe Secret Keyを使用
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const axios = require('axios');
 const app = express();
 const port = 3001;
 
 const { PrismaClient } = require('@prisma/client');
-
-app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 // コース有効化
 app.use(
@@ -412,12 +408,12 @@ app.get('/user-points', async (req, res) => {
   res.json({ points: user.points });
 });
 
-// トークンをサーバーへ
+
 app.post('/auth/validate-token', (req, res) => {
   const accessToken = req.body.token;
 
 // 情報をサーバーサイドへ
-axios.post(`${process.env.REACT_APP_API_URL}/auth/validate-token`, { token: accessToken })
+axios.post('${process.env.REACT_APP_API_URL}/auth/validate-token', { token: accessToken })
 .then(response => {
   console.log(response);
 })
@@ -425,7 +421,6 @@ axios.post(`${process.env.REACT_APP_API_URL}/auth/validate-token`, { token: acce
   console.error(error);
   if (error.response && error.response.status === 401) {
     liff.login();
-  }
   });
 });
 
