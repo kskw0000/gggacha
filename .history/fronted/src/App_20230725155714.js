@@ -106,8 +106,7 @@ setAccessToken(accessToken);
         })
         .catch(error => {
           console.error(error);
-          if (error.response && error.response.status === 401) {
-            liff.login();
+
           }
         });
 

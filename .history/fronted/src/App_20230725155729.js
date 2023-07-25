@@ -106,9 +106,8 @@ setAccessToken(accessToken);
         })
         .catch(error => {
           console.error(error);
-          if (error.response && error.response.status === 401) {
-            liff.login();
-          }
+
+  
         });
 
           const urlParams = new URLSearchParams(location.search);
