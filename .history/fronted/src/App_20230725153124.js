@@ -78,7 +78,7 @@ setAccessToken(localStorage.getItem('accessToken'));
           const userId = profile.userId; // 追加
           const name = profile.displayName;
           setUserName(name);
-  setUserId(userId); // 追加
+          setUserId(userId); // 追加
   setAccessToken(accessToken); // 追加
 
 

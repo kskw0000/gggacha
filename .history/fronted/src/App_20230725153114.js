@@ -78,9 +78,6 @@ setAccessToken(localStorage.getItem('accessToken'));
           const userId = profile.userId; // 追加
           const name = profile.displayName;
           setUserName(name);
-  setUserId(userId); // 追加
-  setAccessToken(accessToken); // 追加
-
 
           // POSTリクエストを行い、ユーザー情報をバックエンドに送信します。
           axios.post(`${process.env.REACT_APP_API_URL}/auth/save-user`, { name, accessToken })
