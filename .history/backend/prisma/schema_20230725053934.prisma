@@ -15,6 +15,7 @@ model UserToken {
 }
 
 
+
 model GachaSetting {
   id             Int   @id
   wins           Int
