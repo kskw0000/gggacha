@@ -62,9 +62,6 @@ const [accessToken, setAccessToken] = useState('');
       // ユーザーがすでにログインしている場合は、ログインフローをスキップします。
       if (isLogin) {
         setUserName(localStorage.getItem('userName'));
-setUserId(localStorage.getItem('userId'));
-setAccessToken(localStorage.getItem('accessToken'));
-  
         return;
       }
 
@@ -149,7 +146,7 @@ setAccessToken(accessToken);
     return (
       <div className="App">
         <Header />
-        <h2>{userName && `Welcome, ${userName}! Your ID is ${userId} and your Access Token is ${accessToken}`}</h2>
+        <h2>{userName && `Welcome, ${userName}!`}</h2>
         <Routes>
           <Route path="/" element={
             <>

@@ -62,9 +62,6 @@ const [accessToken, setAccessToken] = useState('');
       // ユーザーがすでにログインしている場合は、ログインフローをスキップします。
       if (isLogin) {
         setUserName(localStorage.getItem('userName'));
-setUserId(localStorage.getItem('userId'));
-setAccessToken(localStorage.getItem('accessToken'));
-  
         return;
       }
 

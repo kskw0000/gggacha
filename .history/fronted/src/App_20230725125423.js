@@ -32,7 +32,7 @@ const GachaRow = ({ title, gachas }) => (
 const AppContent = () => {
     const [userName, setUserName] = useState(''); 
     const [gachaResult, setGachaResult] = useState([]); 
-const [userId, setUserId] = useState(''); 
+    const [userId, setUserId] = useState(''); 
 const [accessToken, setAccessToken] = useState(''); 
 
 
@@ -62,9 +62,6 @@ const [accessToken, setAccessToken] = useState('');
       // ユーザーがすでにログインしている場合は、ログインフローをスキップします。
       if (isLogin) {
         setUserName(localStorage.getItem('userName'));
-setUserId(localStorage.getItem('userId'));
-setAccessToken(localStorage.getItem('accessToken'));
-  
         return;
       }
 
@@ -90,11 +87,6 @@ setAccessToken(localStorage.getItem('accessToken'));
         // ユーザーがログインした後、その情報をlocalStorageに保存します。
         localStorage.setItem('isLogin', 'true');
         localStorage.setItem('userName', name);
-        localStorage.setItem('userId', userId);
-localStorage.setItem('accessToken', accessToken);
-setUserId(userId);
-setAccessToken(accessToken);
-
 
         axios.post('${process.env.REACT_APP_API_URL}/auth/validate-token', { token: accessToken })
         .then(response => {
@@ -149,7 +141,7 @@ setAccessToken(accessToken);
     return (
       <div className="App">
         <Header />
-        <h2>{userName && `Welcome, ${userName}! Your ID is ${userId} and your Access Token is ${accessToken}`}</h2>
+        <h2>{userName && `Welcome, ${userName}!`}</h2>
         <Routes>
           <Route path="/" element={
             <>
