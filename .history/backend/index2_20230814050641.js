@@ -290,6 +290,35 @@ app.get('/admin/gacha-info', async (req, res) => {
 });
 
 
+//ポイント購入系ーーーーー
+// ポイント購入エンドポイント
+app.post('/buy-points', async (req, res) => {
+  const { userId, amount } = req.body;
+
+  if (!userId || !amount || amount < 1) {
+    res.status(400).json({ message: 'Invalid user id or amount.' });
+    return;
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { userId: userId },
+  });
+
+  if (!user) {
+    res.status(400).json({ message: 'User not found.' });
+    return;
+  }
+
+  // Add points
+  user.points += amount * 1000; // 1000 points for each unit purchased
+
+  await prisma.user.update({
+    where: { userId: userId },
+    data: { points: user.points },
+  });
+
+  res.json({ message: 'Points purchased successfully.' });
+});
 
 
 

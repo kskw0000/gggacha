@@ -290,7 +290,69 @@ app.get('/admin/gacha-info', async (req, res) => {
 });
 
 
+//ポイント購入系ーーーーー
+// ポイント購入エンドポイント
+app.post('/buy-points', async (req, res) => {
+  const { userId, amount } = req.body;
 
+  if (!userId || !amount || amount < 1) {
+    res.status(400).json({ message: 'Invalid user id or amount.' });
+    return;
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { userId: userId },
+  });
+
+  if (!user) {
+    res.status(400).json({ message: 'User not found.' });
+    return;
+  }
+
+  // Add points
+  user.points += amount * 1000; // 1000 points for each unit purchased
+
+  await prisma.user.update({
+    where: { userId: userId },
+    data: { points: user.points },
+  });
+
+  res.json({ message: 'Points purchased successfully.' });
+});
+
+// ストライプチェックアウトセッション
+app.post('/create-checkout-session', async (req, res) => {
+  const { userId } = req.body;
+
+  if (!userId) {
+    res.status(400).json({ message: 'Invalid user id.' });
+    return;
+  }
+
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    line_items: [
+      {
+        price_data: {
+          currency: 'jpy',
+          product_data: {
+            name: '1000 points',
+          },
+          unit_amount: 50000, // 50000 = 500.00 JPY
+        },
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: 'https://your-website.com/success?session_id={CHECKOUT_SESSION_ID}',
+    cancel_url: 'https://your-website.com/cancel',
+    metadata: {
+      userId: userId
+    }
+  });
+
+  res.json({ id: session.id });
+});
 
 
 
