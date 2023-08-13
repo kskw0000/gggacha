@@ -4,10 +4,10 @@ import { BrowserRouter as Router, Route, Routes, useLocation } from "react-route
 import Header from './components/parts/Header';
 import Footer from './components/parts/Footer';
 import Gacha from './components/pages/Gacha';
-import WinnerPage from './components/pages/WinnerPage';
-import Admin from './components/pages/Admin';
+import WinnerPage from './components/pages/WinnerPage'; 
+import Admin from './components/pages/Admin';  
 import { Link } from "react-router-dom";
-import axios from 'axios';
+import axios from 'axios'; 
 import liff from '@line/liff';
 
 const GachaCard = ({ title, id }) => (
@@ -31,7 +31,10 @@ const GachaRow = ({ title, gachas }) => (
 
 const AppContent = () => {
     const [userName, setUserName] = useState(''); 
-    const [gachaResult, setGachaResult] = useState([]);
+    const [gachaResult, setGachaResult] = useState([]); 
+const [userId, setUserId] = useState(''); 
+const [accessToken, setAccessToken] = useState(''); 
+
 
     const gachaData = [
       {
@@ -56,10 +59,14 @@ const AppContent = () => {
       (async () => {
         const isLogin = localStorage.getItem('isLogin');
 
-        if (isLogin) {
-          setUserName(localStorage.getItem('userName'));
-          return;
-        }
+      // ユーザーがすでにログインしている場合は、ログインフローをスキップします。
+      if (isLogin) {
+        setUserName(localStorage.getItem('userName'));
+setUserId(localStorage.getItem('userId'));
+setAccessToken(localStorage.getItem('accessToken'));
+  
+        return;
+      }
 
         await liff.init({ liffId: `2000154484-elnvPWP0` });
 
@@ -67,10 +74,16 @@ const AppContent = () => {
           liff.login();
         } else {
           const profile = await liff.getProfile();
+          const accessToken = liff.getAccessToken();
+          const userId = profile.userId; // 追加
           const name = profile.displayName;
           setUserName(name);
+  setUserId(userId); // 追加
+  setAccessToken(accessToken); // 追加
 
-          axios.post(`${process.env.REACT_APP_API_URL}/auth/save-user`, { name })
+
+          // POSTリクエストを行い、ユーザー情報をバックエンドに送信します。
+          axios.post(`${process.env.REACT_APP_API_URL}/auth/save-user`, { name, accessToken })
           .then(response => {
             console.log(response);
           })
@@ -78,14 +91,46 @@ const AppContent = () => {
             console.error(error);
           });
 
-          localStorage.setItem('isLogin', 'true');
-          localStorage.setItem('userName', name);
+        // ユーザーがログインした後、その情報をlocalStorageに保存します。
+        localStorage.setItem('isLogin', 'true');
+        localStorage.setItem('userName', name);
+        localStorage.setItem('userId', userId);
+localStorage.setItem('accessToken', accessToken);
+setUserId(userId);
+setAccessToken(accessToken);
+
+
+        axios.post('${process.env.REACT_APP_API_URL}/auth/validate-token', { token: accessToken, userId })
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.error(error);
+          if (error.response && error.response.status === 401) {
+            liff.login();
+          }
+        });
 
           const urlParams = new URLSearchParams(location.search);
           const code = urlParams.get('code');
+          const existingUserId = localStorage.getItem('userId');
   
-          if (code) {
+          if (existingUserId) {
+            axios.get(`${process.env.REACT_APP_API_URL}/auth/check?userId=${existingUserId}`)
+              .then(response => {
+                if (response.status !== 200) {
+                  liff.login();
+                }
+              })
+              .catch(error => {
+                console.error(error);
+              });
+          } else if (code) {
             axios.get(`${process.env.REACT_APP_API_URL}/auth/line?code=${code}`)
+              .then(response => {
+                const userId = response.data.userId;
+                localStorage.setItem('userId', userId);
+              })
               .catch(error => {
                 console.error(error);
               });
@@ -108,7 +153,7 @@ const AppContent = () => {
     return (
       <div className="App">
         <Header />
-        <h2>{userName && `Welcome, ${userName}!`}</h2>
+        <h2>{userName && `Welcome, ${userName}! Your ID is ${userId} and your Access Token is ${accessToken}`}</h2>
         <Routes>
           <Route path="/" element={
             <>
@@ -118,8 +163,8 @@ const AppContent = () => {
             </>
           } />
           <Route path="/gacha/:id" element={<Gacha />} />
-          <Route path="/winner" element={<WinnerPage />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route path="/winner" element={<WinnerPage />} />  
+          <Route path="/admin" element={<Admin />} />  
         </Routes>
         <Footer />
       </div>
