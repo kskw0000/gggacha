@@ -179,13 +179,7 @@ app.get('/gacha', async (req, res) => {
   
 
   // Deduct 120 points
-  // Deduct 120 points if user has enough points
-if (user.points >= 120) {
   user.points -= 120;
-} else {
-  user.points = 0; // Ensure points don't go negative
-}
-
 
   await prisma.user.update({
     where: { userId: userId },
